@@ -8,7 +8,7 @@ char *video_ram = (char *)0xB8000;
 int cursor_pos = 0;
 int char_attribute_byte = 0x07;
 
-void clear_screen()
+void vga_clear_screen()
 {
   for (int i = 0; i < FRAME_SIZE; i = i + 2)
   {
@@ -18,7 +18,7 @@ void clear_screen()
   cursor_pos = 0;
 }
 
-void print(char *msg)
+void vga_print(char *msg)
 {
   int j = 0;
   while (msg[j] != '\0')
@@ -29,14 +29,14 @@ void print(char *msg)
   }
 }
 
-void print_ln(char *msg)
+void vga_print_ln(char *msg)
 {
-  print(msg);
+  vga_print(msg);
   int current_line = cursor_pos / COLS;
   cursor_pos = (current_line + 1) * COLS;
 }
 
-void set_text_colour(int foreground, int background) 
+void vga_set_text_colour(int foreground, int background) 
 {
   char_attribute_byte = (background << 4) | foreground;
 }
