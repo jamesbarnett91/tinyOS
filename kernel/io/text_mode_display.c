@@ -1,7 +1,8 @@
+#define COLS 80
+#define ROWS 25
+#define FRAME_SIZE (ROWS * COLS * 2) // 2 bytes per char
 
-#define FRAME_SIZE (80 * 25 * 2) // 80 cols, 25 rows, 2 bytes per char
-
-char *video_ram = (char *) 0xB8000;
+char *video_ram = (char *)0xB8000;
 int cursor_pos = 0;
 
 void clear_screen()
@@ -14,7 +15,7 @@ void clear_screen()
   cursor_pos = 0;
 }
 
-void print(char *msg) 
+void print(char *msg)
 {
   int j = 0;
   while (msg[j] != '\0')
@@ -25,16 +26,9 @@ void print(char *msg)
   }
 }
 
-
-void run_kern()
+void print_ln(char *msg)
 {
-  clear_screen();
-
-  print("I am a kernel!");
-  print(" another message");
-}
-
-void kernel_entrypoint()
-{
-  run_kern();
+  print(msg);
+  int current_line = cursor_pos / COLS;
+  cursor_pos = (current_line + 1) * (COLS*2);
 }
