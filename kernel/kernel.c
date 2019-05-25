@@ -1,5 +1,7 @@
-#include "./io/vga/text_mode_diplay.h"
+#include "./io/vga/text_mode_display.h"
 #include "./io/vga/colours.h"
+#include "./io/keyboard/keyboard_handler.h"
+#include "global_descriptor_table.h"
 
 void run_kern_demo()
 {
@@ -92,5 +94,8 @@ void run_kern_demo()
 
 void kernel_entrypoint()
 {
+  init_gdt();
+  init_keyboard_handler();
   run_kern_demo();
+  while(1);
 }

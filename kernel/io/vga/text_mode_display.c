@@ -40,3 +40,9 @@ void vga_set_text_colour(int foreground, int background)
 {
   char_attribute_byte = (background << 4) | foreground;
 }
+
+void vga_print_raw(unsigned char byte)
+{
+  video_ram[cursor_pos++] = byte;
+  video_ram[cursor_pos++] = char_attribute_byte;
+}
