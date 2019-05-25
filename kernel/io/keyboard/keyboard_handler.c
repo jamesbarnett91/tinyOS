@@ -67,7 +67,17 @@ void handle_keypress() {
   if(!isKeyup(scancode))
   {
     char pressed_key = scancode_map[scancode];
-    vga_print_raw(pressed_key);
+    switch(pressed_key)
+    {
+      case '\b':
+        vga_backspace();
+        break;
+      case '\n':
+        vga_newline();
+        break;
+      default:
+        vga_print_raw(pressed_key);
+    }
   }
 
 }

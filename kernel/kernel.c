@@ -88,6 +88,9 @@ void run_kern_demo()
   vga_set_text_colour(COLOUR_WHITE, COLOUR_BROWN);
   vga_print("S");
   vga_set_text_colour(COLOUR_WHITE, COLOUR_GRAY);
+  vga_print("!");
+
+  vga_set_text_colour(COLOUR_WHITE, COLOUR_BLACK);
 }
 
 
