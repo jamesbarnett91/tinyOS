@@ -6,16 +6,27 @@
 
 char *video_ram = (char *) 0xB8000;
 int cursor_pos = 0;
-int char_attribute_byte = 0x07;
+int char_attribute_byte = 0x0F;
+
+extern void write_port(unsigned short port, unsigned char data);
 
 void scrn_clear()
 {
   for (int i = 0; i < FRAME_SIZE; i = i + 2)
   {
-    video_ram[i] = ' ';
+    video_ram[i] = 0;
     video_ram[i + 1] = char_attribute_byte;
   };
   cursor_pos = 0;
+}
+
+void scrn_update_csr()
+{
+    unsigned short csr = cursor_pos/2;
+    write_port(0x3D4, 14);
+    write_port(0x3D5, csr >> 8);
+    write_port(0x3D4, 15);
+    write_port(0x3D5, csr);
 }
 
 void scrn_print(char *msg)
@@ -45,6 +56,7 @@ void scrn_putchar(unsigned char byte)
 {
   video_ram[cursor_pos++] = byte;
   video_ram[cursor_pos++] = char_attribute_byte;
+  scrn_update_csr();
 }
 
 // TODO - jump cursor to prev non 0 text char rather than reversing through whole array
@@ -54,6 +66,7 @@ void scrn_backspace()
   {
     video_ram[--cursor_pos] = char_attribute_byte;
     video_ram[--cursor_pos] = 0;
+    scrn_update_csr();
   }
 }
 
@@ -61,4 +74,6 @@ void scrn_newline()
 {
   int current_line = cursor_pos / COLS;
   cursor_pos = (current_line + 1) * COLS;
+  scrn_update_csr();
 }
+
