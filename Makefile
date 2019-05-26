@@ -13,6 +13,8 @@ build: setup kernel/kernel.c kernel/global_descriptor_table.c kernel/gpu/text_mo
 	$(CC) $(CFLAGS) -c kernel/global_descriptor_table.c -o bin/global_descriptor_table.o
 	$(CC) $(CFLAGS) -c kernel/gpu/text_mode/display.c -o bin/text_mode_display.o
 	$(CC) $(CFLAGS) -c kernel/io/keyboard/keyboard_handler.c -o bin/keyboard_handler.o
+	$(CC) $(CFLAGS) -c os/main.c -o bin/main.o
+	$(CC) $(CFLAGS) -c os/shell/shell.c -o bin/shell.o
 	ld -m elf_i386 -T link.ld -o bin/kernel.bin bin/*.o
 
 clean:

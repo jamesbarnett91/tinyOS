@@ -1,6 +1,7 @@
 #include "../../interrupt_descriptor_table.h"
 #include "../../gpu/text_mode/display.h"
 #include "scancode_map.h"
+#include "../../../os/main.h"
 
 extern void keyboard_handler(void);
 extern char read_port(unsigned short port);
@@ -66,18 +67,8 @@ void handle_keypress() {
 
   if(!isKeyup(scancode))
   {
-    char pressed_key = scancode_map[scancode];
-    switch(pressed_key)
-    {
-      case '\b':
-        scrn_backspace();
-        break;
-      case '\n':
-        scrn_newline();
-        break;
-      default:
-        scrn_putchar(pressed_key);
-    }
+    unsigned char pressed_key = scancode_map[scancode];
+    os_proxy_keypress(pressed_key);
   }
 
 }
