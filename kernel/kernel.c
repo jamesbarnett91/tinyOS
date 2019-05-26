@@ -5,10 +5,10 @@
 
 void run_kern_demo()
 {
-  
+  scrn_enable_cursor(10, 12);
   scrn_clear();
   scrn_set_text_colour(COLOUR_LIGHT_GREEN, COLOUR_BLACK);
-  
+
   scrn_println("  _   _              ____   _____ ");
   scrn_println(" | | (_)            / __ \\ / ____|");
   scrn_println(" | |_ _ _ __  _   _| |  | | (___  ");

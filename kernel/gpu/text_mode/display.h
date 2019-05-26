@@ -1,3 +1,4 @@
+void scrn_enable_cursor(unsigned char start_line, unsigned char end_line);
 void scrn_clear();
 void scrn_print(char *msg);
 void scrn_println(char *msg);

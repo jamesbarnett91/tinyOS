@@ -9,15 +9,15 @@ int cursor_pos = 0;
 int char_attribute_byte = 0x0F;
 
 extern void write_port(unsigned short port, unsigned char data);
+extern char read_port(unsigned short port);
 
-void scrn_clear()
+void scrn_enable_cursor(unsigned char start_line, unsigned char end_line)
 {
-  for (int i = 0; i < FRAME_SIZE; i = i + 2)
-  {
-    video_ram[i] = 0;
-    video_ram[i + 1] = char_attribute_byte;
-  };
-  cursor_pos = 0;
+	write_port(0x3D4, 0x0A);
+	write_port(0x3D5, (read_port(0x3D5) & 0xC0) | start_line);
+ 
+	write_port(0x3D4, 0x0B);
+	write_port(0x3D5, (read_port(0x3D5) & 0xE0) | end_line);
 }
 
 void scrn_update_csr()
@@ -27,6 +27,16 @@ void scrn_update_csr()
     write_port(0x3D5, csr >> 8);
     write_port(0x3D4, 15);
     write_port(0x3D5, csr);
+}
+
+void scrn_clear()
+{
+  for (int i = 0; i < FRAME_SIZE; i = i + 2)
+  {
+    video_ram[i] = 0;
+    video_ram[i + 1] = char_attribute_byte;
+  };
+  cursor_pos = 0;
 }
 
 void scrn_print(char *msg)
