@@ -1,5 +1,5 @@
 #include "../../interrupt_descriptor_table.h"
-#include "../vga/text_mode_display.h"
+#include "../../gpu/text_mode/display.h"
 #include "scancode_map.h"
 
 extern void keyboard_handler(void);
@@ -70,13 +70,13 @@ void handle_keypress() {
     switch(pressed_key)
     {
       case '\b':
-        vga_backspace();
+        scrn_backspace();
         break;
       case '\n':
-        vga_newline();
+        scrn_newline();
         break;
       default:
-        vga_print_raw(pressed_key);
+        scrn_putchar(pressed_key);
     }
   }
 
