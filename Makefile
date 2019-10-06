@@ -16,6 +16,7 @@ build: setup kernel/kernel.c kernel/global_descriptor_table.c kernel/gpu/text_mo
 	$(CC) $(CFLAGS) -c os/main.c -o bin/main.o
 	$(CC) $(CFLAGS) -c os/shell/shell.c -o bin/shell.o
 	$(CC) $(CFLAGS) -c os/stdlib/stdlib.c -o bin/stdlib.o
+	$(CC) $(CFLAGS) -c os/commands/echo.c -o bin/echo.o
 	ld -m elf_i386 -T link.ld -o bin/kernel.bin bin/*.o
 
 clean:

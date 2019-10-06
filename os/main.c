@@ -57,6 +57,21 @@ void os_update_infobar_rc()
   scrn_set_cursor_pos(curr_r, curr_c);
 }
 
+void os_update_infobar_program() {
+  int curr_attr_byte = scrn_get_char_attr_byte();
+  int curr_r = scrn_get_cursor_row();
+  int curr_c = scrn_get_cursor_col();
+
+  scrn_set_text_colour(COLOUR_WHITE, COLOUR_BLUE);
+  scrn_set_cursor_pos(0, 11);
+  line_pad(64);
+  scrn_set_cursor_pos(0, 11);
+  scrn_print(focused_program.name);
+
+  scrn_set_char_attr_byte(curr_attr_byte);
+  scrn_set_cursor_pos(curr_r, curr_c);
+}
+
 void os_init_infobar()
 {
   scrn_clear();
@@ -64,9 +79,7 @@ void os_init_infobar()
   scrn_set_text_colour(COLOUR_WHITE, COLOUR_BLUE);
   line_pad(80); // fill line
   scrn_set_cursor_pos(0, 2);
-  scrn_print("tinyOS");
-  scrn_set_cursor_pos(0, 30);
-  scrn_print("running: ");
+  scrn_print("tinyOS - ");
   scrn_print(focused_program.name);
   
   os_update_infobar_rc();
@@ -77,6 +90,7 @@ void os_init_infobar()
 // TODO keep a stack of running programs
 void os_update_focused_program(Program_t program) {
   focused_program = program;
+  os_update_infobar_program();
 }
 
 // Send keypress from kernel to the currently focused programs keypress handler
@@ -87,11 +101,11 @@ void os_proxy_keypress(unsigned char key) {
 
 void os_start()
 {
-  os_update_focused_program(shell_run());
   scrn_enable_cursor(10, 12);
   os_init_infobar();
   os_show_splash();
+  
+  os_update_focused_program(shell_run());
+
   os_update_infobar_rc();
 }
-
-// TODO display handling
