@@ -39,32 +39,22 @@ void scrn_clear()
   cursor_pos = 0;
 }
 
-void scrn_print(char *msg)
-{
-  int j = 0;
-  while (msg[j] != '\0')
-  {
-    video_ram[cursor_pos++] = msg[j];
-    video_ram[cursor_pos++] = char_attribute_byte;
-    ++j;
-  }
-}
-
-void scrn_println(char *msg)
-{
-  scrn_print(msg);
-  int current_line = cursor_pos / COLS;
-  cursor_pos = (current_line + 1) * COLS;
-}
-
 void scrn_set_text_colour(int foreground, int background) 
 {
   char_attribute_byte = (background << 4) | foreground;
 }
 
-void scrn_putchar(unsigned char byte)
+int scrn_get_char_attr_byte() {
+  return char_attribute_byte;
+}
+
+void scrn_set_char_attr_byte(int byte) {
+ char_attribute_byte = byte;
+}
+
+void scrn_putchar(unsigned char c)
 {
-  video_ram[cursor_pos++] = byte;
+  video_ram[cursor_pos++] = c;
   video_ram[cursor_pos++] = char_attribute_byte;
   scrn_update_csr();
 }
@@ -87,3 +77,37 @@ void scrn_newline()
   scrn_update_csr();
 }
 
+void scrn_print(char *msg)
+{
+  int j = 0;
+  while (msg[j] != '\0')
+  {
+    video_ram[cursor_pos++] = msg[j];
+    video_ram[cursor_pos++] = char_attribute_byte;
+    ++j;
+  }
+  scrn_update_csr();
+}
+
+void scrn_println(char *msg)
+{
+  scrn_print(msg);
+  scrn_newline();
+}
+
+void scrn_set_cursor_pos(unsigned int row, unsigned int col)
+{
+  cursor_pos = (row * COLS) + (col * 2);
+  scrn_update_csr();
+}
+
+int scrn_get_cursor_row()
+{
+  // 0 index
+  return cursor_pos / COLS;
+}
+
+int scrn_get_cursor_col()
+{
+  return (cursor_pos % COLS)/2;
+}

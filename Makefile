@@ -15,6 +15,7 @@ build: setup kernel/kernel.c kernel/global_descriptor_table.c kernel/gpu/text_mo
 	$(CC) $(CFLAGS) -c kernel/io/keyboard/keyboard_handler.c -o bin/keyboard_handler.o
 	$(CC) $(CFLAGS) -c os/main.c -o bin/main.o
 	$(CC) $(CFLAGS) -c os/shell/shell.c -o bin/shell.o
+	$(CC) $(CFLAGS) -c os/stdlib/stdlib.c -o bin/stdlib.o
 	ld -m elf_i386 -T link.ld -o bin/kernel.bin bin/*.o
 
 clean:
@@ -23,7 +24,7 @@ clean:
 	rm -f tinyOS.iso
 
 run:
-	qemu-system-i386 -kernel bin/kernel.bin
+	cpulimit -l 20 qemu-system-i386 -kernel bin/kernel.bin
 
 build-and-run: build run
 
