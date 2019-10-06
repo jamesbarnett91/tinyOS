@@ -23,7 +23,7 @@ char* int_to_str(int i)
 
 int strcmp(const char *str1, const char *str2)
 {
-	while(*str1){
+	while(*str1) {
 		if (*str1 != *str2) {
 	    break;
     }
@@ -32,4 +32,16 @@ int strcmp(const char *str1, const char *str2)
 	}
 
 	return *(const unsigned char*)str1 - *(const unsigned char*)str2;
+}
+
+void strcpy(const char *src, char * dest) {
+	char *ptr = dest;
+	
+	while (*src != '\0') {
+		*dest = *src;
+		dest++;
+		src++;
+	}
+ 
+	*dest = '\0';
 }

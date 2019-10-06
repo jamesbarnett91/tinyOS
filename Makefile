@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = -m32 -std=c99 -fno-stack-protector
+CFLAGS = -m32 -std=c99 -fno-stack-protector -Wno-builtin-declaration-mismatch
 
 default: build
 
@@ -17,6 +17,8 @@ build: setup kernel/kernel.c kernel/global_descriptor_table.c kernel/gpu/text_mo
 	$(CC) $(CFLAGS) -c os/shell/shell.c -o bin/shell.o
 	$(CC) $(CFLAGS) -c os/stdlib/stdlib.c -o bin/stdlib.o
 	$(CC) $(CFLAGS) -c os/commands/echo.c -o bin/echo.o
+	$(CC) $(CFLAGS) -c os/commands/files.c -o bin/files.o
+	$(CC) $(CFLAGS) -c os/filesystem/ramfs.c -o bin/ramfs.o
 	ld -m elf_i386 -T link.ld -o bin/kernel.bin bin/*.o
 
 clean:

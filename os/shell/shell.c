@@ -1,7 +1,7 @@
 #include "../../os/main.h"
 #include "../../kernel/gpu/text_mode/display.h"
 #include "../stdlib/sdtlib.h"
-#include "../commands/echo.h"
+#include "../commands/commands.h"
 
 #define CMD_BUFFER_SIZE 80
 
@@ -71,7 +71,13 @@ unsigned char* shell_parse_args() {
 void shell_exec_cmd(unsigned char* cmd_name, unsigned char* args) {
   // TODO lookup string to funciton pointer
   if (strcmp(cmd_name, "echo") == 0) {
-    echo(args);
+    cmd_echo(args);
+  }
+  else if(strcmp(cmd_name, "cf") == 0) {
+    cmd_cf(args);
+  }
+  else if(strcmp(cmd_name, "lf") == 0) {
+    cmd_lf(args);
   }
   else if (strcmp(cmd_name, "") != 0) {
     scrn_print(cmd_name);
